@@ -2,15 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-// ✅ Message type
-type Message = {
-  title: string;
-  body: string;
-  sticker: string;
-  photo: string | null;
-};
-
-const MESSAGES: Message[] = [
+const MESSAGES = [
   {
     title: "Happy Birthday Brooooo!",
     body: "Whoohoooo ⸜(｡˃ ᵕ ˂ )⸝",
@@ -31,16 +23,61 @@ const MESSAGES: Message[] = [
   },
   {
     title: "And please....",
-    body: "Try not to eat unhealthy food 😤",
+    body: "Try not to eat a lot of unhealty food and stop giving mummy papa stress by not answering their call or replying to texts!!!",
     sticker: "人(´∀｀)",
     photo: "/photos/photo4.jpg"
   },
 ];
 
-// ---------------- Sparkle Trail ----------------
-type Sparkle = { id: number; x: number; y: number; createdAt: number };
+const GLOBAL_CSS = `
+.kawaii-cursor { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%23b0b7c3'/%3E%3C/svg%3E") 10 10, crosshair; }
+
+.shimmer-overlay { position:absolute; inset:0; }
+
+.floating-heart {
+  position:absolute;
+  bottom:-10%;
+  font-size:1.4rem;
+  animation: float-heart var(--dur, 10s) ease-in forwards;
+}
+
+@keyframes float-heart {
+  0%{opacity:0;}
+  100%{opacity:0; transform:translateY(-110vh);}
+}
+
+.star {
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:#cbd5e1;
+  border-radius:50%;
+  animation: twinkle var(--dur,2s) infinite;
+}
+
+@keyframes twinkle {
+  0%,100%{opacity:0.2;}
+  50%{opacity:1;}
+}
+
+.sparkle-particle {
+  position:fixed;
+  width:8px;
+  height:8px;
+}
+
+.sparkle-burst {
+  animation: burst-out 0.7s ease-out forwards;
+}
+
+@keyframes burst-out {
+  0%{opacity:1;}
+  100%{opacity:0;}
+}
+`;
 
 function SparkleTrail() {
+  type Sparkle = { id:number; x:number; y:number; createdAt:number };
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
   const idRef = useRef(0);
   const lastTime = useRef(0);
@@ -50,94 +87,57 @@ function SparkleTrail() {
       const now = Date.now();
       if (now - lastTime.current < 50) return;
       lastTime.current = now;
-
-      const s: Sparkle = {
-        id: idRef.current++,
-        x: e.clientX,
-        y: e.clientY,
-        createdAt: now,
-      };
-
+      const s = { id:idRef.current++, x:e.clientX, y:e.clientY, createdAt:now };
       setSparkles(prev => [...prev.slice(-15), s]);
     };
-
     window.addEventListener('mousemove', handle);
     return () => window.removeEventListener('mousemove', handle);
-  }, []);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      const now = Date.now();
-      setSparkles(prev => prev.filter(s => now - s.createdAt < 600));
-    }, 100);
-    return () => clearInterval(t);
   }, []);
 
   return (
     <>
       {sparkles.map(s => (
-        <div
-          key={s.id}
-          className="sparkle-particle"
-          style={{
-            left: s.x - 4,
-            top: s.y - 4,
-            animation: 'sparkle-fade 0.6s ease-out forwards',
-          }}
-        />
+        <div key={s.id} className="sparkle-particle"
+          style={{ left:s.x, top:s.y }} />
       ))}
     </>
   );
 }
 
-// ---------------- Background ----------------
-type Heart = { id: number; left: number; duration: number };
-
 function BackgroundScene() {
+  type Heart = { id:number; left:number; duration:number };
   const [hearts, setHearts] = useState<Heart[]>([]);
   const idRef = useRef(0);
 
   useEffect(() => {
     const spawn = () => {
-      setHearts(prev => [
-        ...prev.slice(-10),
-        {
-          id: idRef.current++,
-          left: Math.random() * 100,
-          duration: 8 + Math.random() * 4,
-        },
-      ]);
+      setHearts(prev => [...prev, {
+        id:idRef.current++,
+        left:Math.random()*100,
+        duration:8+Math.random()*4
+      }]);
     };
-
     const t = setInterval(spawn, 4000);
     return () => clearInterval(t);
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {/* Stars */}
-      {[...Array(10)].map((_, i) => (
-        <div
-          key={i}
-          className="star"
+      {[...Array(12)].map((_,i)=>(
+        <div key={i} className="star"
           style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            '--dur': `${1 + Math.random()}s`,
-          } as React.CSSProperties}
-        />
+            top:`${5+Math.random()*40}%`,
+            left:`${Math.random()*100}%`,
+            '--dur':`${1.5+Math.random()*1.5}s`
+          } as React.CSSProperties}/>
       ))}
 
-      {/* Hearts */}
-      {hearts.map(h => (
-        <div
-          key={h.id}
-          className="floating-heart"
+      {hearts.map(h=>(
+        <div key={h.id} className="floating-heart"
           style={{
-            left: `${h.left}%`,
-            '--dur': `${h.duration}s`,
-          } as React.CSSProperties}
-        >
+            left:`${h.left}%`,
+            '--dur':`${h.duration}s`
+          } as React.CSSProperties}>
           🩶
         </div>
       ))}
@@ -145,95 +145,32 @@ function BackgroundScene() {
   );
 }
 
-// ---------------- Components ----------------
-function ProgressHearts({
-  currentStep,
-  totalSteps,
-}: {
-  currentStep: number;
-  totalSteps: number;
-}) {
-  return (
-    <div className="flex gap-2 justify-center mb-4">
-      {[...Array(totalSteps)].map((_, i) => (
-        <span key={i}>{i <= currentStep ? '🩶' : '🤍'}</span>
-      ))}
-    </div>
-  );
-}
-
-function Envelope({ onOpen }: { onOpen: () => void }) {
-  return (
-    <button onClick={onOpen} className="kawaii-btn">
-      💌 Open
-    </button>
-  );
-}
-
-function PhotoDisplay({ src }: { src: string | null }) {
-  if (!src) return null;
-  return <img src={src} className="w-full rounded-xl" />;
-}
-
-function MessagePopup({
-  message,
-  step,
-  totalSteps,
-  onNext,
-  onClose,
-}: {
-  message: Message;
-  step: number;
-  totalSteps: number;
-  onNext: () => void;
-  onClose: () => void;
-}) {
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handle = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handle);
-    return () => document.removeEventListener('keydown', handle);
-  }, [onClose]);
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <div ref={ref} className="bg-white p-6 rounded-xl">
-        <h2>{message.title}</h2>
-        <p>{message.body}</p>
-        <PhotoDisplay src={message.photo} />
-
-        <button onClick={step === totalSteps - 1 ? onClose : onNext}>
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ---------------- Main ----------------
 export default function Page() {
-  const [step, setStep] = useState(-1);
+  const [step,setStep]=useState(-1);
 
   return (
-    <main className="p-10 text-center">
-      <BackgroundScene />
-      <SparkleTrail />
+    <>
+      <style>{GLOBAL_CSS}</style>
 
-      {step === -1 && <Envelope onOpen={() => setStep(0)} />}
+      <main className="kawaii-cursor min-h-screen flex flex-col items-center justify-center">
 
-      {step >= 0 && (
-        <MessagePopup
-          message={MESSAGES[step]}
-          step={step}
-          totalSteps={MESSAGES.length}
-          onNext={() => setStep(s => s + 1)}
-          onClose={() => setStep(-1)}
-        />
-      )}
-    </main>
+        <BackgroundScene/>
+        <SparkleTrail/>
+
+        {step===-1 && (
+          <button onClick={()=>setStep(0)}>Open</button>
+        )}
+
+        {step>=0 && (
+          <div>
+            <h1>{MESSAGES[step].title}</h1>
+            <p>{MESSAGES[step].body}</p>
+            <button onClick={()=>setStep(p=>p+1)}>Next</button>
+          </div>
+        )}
+
+      </main>
+    </>
   );
 }
 
