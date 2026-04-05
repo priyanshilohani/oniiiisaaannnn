@@ -178,7 +178,14 @@ const GLOBAL_CSS = `
 // Sparkle cursor trail
 // ─────────────────────────────────────────────
 function SparkleTrail() {
-  const [sparkles, setSparkles] = useState([]);
+  type Sparkle = {
+  id: number;
+  x: number;
+  y: number;
+  createdAt: number;
+};
+
+const [sparkles, setSparkles] = useState<Sparkle[]>([]);
   const idRef = useRef(0);
   const lastTime = useRef(0);
 
@@ -219,7 +226,13 @@ function SparkleTrail() {
 // Background — clouds, stars, floating hearts (silver tones)
 // ─────────────────────────────────────────────
 function BackgroundScene() {
-  const [hearts, setHearts] = useState([]);
+  type Heart = {
+  id: number;
+  left: number;
+  duration: number;
+};
+
+const [hearts, setHearts] = useState<Heart[]>([]);
   const idRef = useRef(0);
 
   useEffect(() => {
