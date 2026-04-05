@@ -184,7 +184,7 @@ function SparkleTrail() {
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const handle = (e) => {
+    const handle = (e: MouseEvent) => {
       const now = Date.now();
       if (now - lastTime.current < 50) return;
       lastTime.current = now;
@@ -386,7 +386,7 @@ function MessagePopup({ message, step, totalSteps, onNext, onClose, isExiting })
     if (!popup) return;
     const focusable = popup.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     focusable[0]?.focus();
-    const handle = (e) => {
+    const handle = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { onClose(); return; }
       if (e.key === 'Tab') {
         const els = [...focusable];
