@@ -8,13 +8,13 @@ const MESSAGES = [
     title: "Happy Birthday Brooooo!",
     body: "Whoohoooo ⸜(｡˃ ᵕ ˂ )",
     sticker: "🎂",
-    photo: "/photos/photo1.jpg" ,
+    photo: "/photos/photo1.JPG" ,
   },
   {
     title: "Silver Jubliee which means…",
     body: "You are 25 now lmao unc.",
     sticker: "( ๑ ｀∇´๑)",
-    photo: "/photos/photo2.jpg",
+    photo: "/photos/photo2.JPG",
   },
   {
     title: "So now,",
@@ -26,7 +26,7 @@ const MESSAGES = [
     title: "And please....",
     body: "Try not to eat a lot of unhealty food and stop giving mummy papa stress by not answering their call or replying to texts!!!",
     sticker: "人(´∀｀)",
-    photo: "/photos/photo4.jpg",
+    photo: "/photos/photo4.JPG",
   },
 ];
 
@@ -186,13 +186,13 @@ function PhotoDisplay({ src }: { src?: string }) {
   if (!src) return null;
 
   return (
-    <div className="mb-4 rounded-xl overflow-hidden border border-slate-200 shadow-md">
-      <img
-        src={src}
-        alt="Memory"
-        className="w-full max-h-52 object-cover"
-      />
-    </div>
+    <div className="mb-4 rounded-xl overflow-hidden border border-slate-200 shadow-md bg-slate-100 flex items-center justify-center">
+  <img
+    src={src}
+    alt="Memory"
+    className="max-h-56 w-auto object-contain transition-transform duration-300 hover:scale-105"
+  />
+</div>
   );
 }
 
