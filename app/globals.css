@@ -1,5 +1,161 @@
 @import 'tailwindcss';
 
+/* ============================================
+   SILVER SOFT AESTHETIC THEME
+   ============================================ */
+
+:root {
+  --bg-1: #f8fafc;
+  --bg-2: #f1f5f9;
+  --bg-3: #e2e8f0;
+
+  --primary: #94a3b8;
+  --primary-dark: #64748b;
+
+  --text-main: #334155;
+  --text-soft: #64748b;
+
+  --card: #ffffff;
+  --border: #cbd5e1;
+}
+
+/* ---------- Base ---------- */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+
+  background: linear-gradient(
+    160deg,
+    var(--bg-1) 0%,
+    var(--bg-2) 50%,
+    var(--bg-3) 100%
+  );
+
+  color: var(--text-main);
+}
+
+/* ---------- Cursor ---------- */
+.kawaii-cursor {
+  cursor: crosshair;
+}
+
+/* ---------- Clouds ---------- */
+.cloud {
+  position: absolute;
+  background: rgba(203,213,225,0.6);
+  border-radius: 50px;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(203,213,225,0.6);
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 55%;
+  height: 160%;
+  top: -50%;
+  left: 15%;
+}
+
+.cloud::after {
+  width: 40%;
+  height: 130%;
+  top: -35%;
+  right: 15%;
+}
+
+@keyframes float-cloud {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ---------- Stars ---------- */
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #cbd5e1;
+  border-radius: 50%;
+  animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ---------- Floating Hearts ---------- */
+.floating-heart {
+  position: absolute;
+  bottom: -10%;
+  font-size: 1.4rem;
+  animation: float-heart 10s ease-in forwards;
+}
+
+@keyframes float-heart {
+  0% { opacity:0; transform:translateY(0); }
+  10% { opacity:0.6; }
+  100% { opacity:0; transform:translateY(-110vh); }
+}
+
+/* ---------- Button ---------- */
+.kawaii-btn {
+  padding: 10px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+  color: #1e293b;
+
+  transition: 0.2s;
+}
+
+.kawaii-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- Popup ---------- */
+.popup-entering {
+  animation: popup-in 0.4s ease forwards;
+}
+
+.popup-exiting {
+  animation: popup-out 0.25s ease forwards;
+}
+
+@keyframes popup-in {
+  from { opacity:0; transform:scale(0.9); }
+  to { opacity:1; transform:scale(1); }
+}
+
+@keyframes popup-out {
+  from { opacity:1; }
+  to { opacity:0; transform:scale(0.9); }
+}
+
+/* ---------- Sparkle ---------- */
+.sparkle-particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e2e8f0, #94a3b8);
+}
+
+@keyframes sparkle-fade {
+  to { opacity:0; transform:scale(0); }
+}
+
+/* @import 'tailwindcss';
+
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
@@ -499,4 +655,4 @@ body {
 /* Skip decorative focus for mouse users */
 :focus:not(:focus-visible) {
   outline: none;
-}
+} */
