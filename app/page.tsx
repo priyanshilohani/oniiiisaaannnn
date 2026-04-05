@@ -275,11 +275,11 @@ const [hearts, setHearts] = useState<Heart[]>([]);
       {/* Stars */}
       {[...Array(12)].map((_, i) => (
         <div key={i} className="star" style={{
-          top: `${5 + Math.random() * 40}%`,
-          left: `${Math.random() * 100}%`,
-          '--dur': `${1.5 + Math.random() * 1.5}s`,
-          animationDelay: `${Math.random() * 2}s`,
-        }} />
+  top: `${5 + Math.random() * 40}%`,
+  left: `${Math.random() * 100}%`,
+  '--dur': `${1.5 + Math.random() * 1.5}s`,
+  animationDelay: `${Math.random() * 2}s`,
+} as React.CSSProperties} />
       ))}
 
       {/* Floating hearts */}
